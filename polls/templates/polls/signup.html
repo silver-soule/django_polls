@@ -1,0 +1,38 @@
+{% load staticfiles %}
+<html>
+    <body>
+        <link rel="stylesheet" type=text/css href="{% static 'polls/css/materialize.css' %}" />
+        <div class="row">
+        {{error_message}}
+            <form class="col s12" id="myform" >
+                {% csrf_token %}
+                <div class="row">
+                    <div class="input-field col s6 ">
+                        <input type="text" id="name" name="fullName"  class="validate " > 
+                        <label for="name"> Your Name </label>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="input-field col s6 ">
+                        <input type="text" id="phone_no" name="number" class="validate ">
+                        <label for="phone_no" >Mobile No.</label>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="input-field col s6 ">
+                        <input  type="date" id="DOB" name="dateOfBirth"  class="validate "> 
+                        <label for="DOB" ></label>
+                    </div>
+                </div>
+                <br>    
+                <div class="center-align">
+                    <button class="btn waves-effect waves-light" id="mybutton" type="submit" name="action">Submit             
+                    </button>
+                </div>
+            </form>
+        </div>
+        <script src="{%static 'polls/js/jquery-3.0.js' %}"></script>
+        <script src="{% static 'polls/js/materialize.js' %}"></script>
+        <script src="{% static 'polls/js/signupjquery.js' %}"></script>
+    </body>
+</html>
