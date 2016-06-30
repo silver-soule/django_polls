@@ -18,7 +18,7 @@ button.click(function(event){
                             id=$('[name="'+key+'"]').attr('id');
                             $('[for="'+id+'"]').attr('data-error',data['failiure'][key]);
 
-                            //$('[name="'+key+'"]').attr("data-error",data['failiure'][key]);
+                            
                         }
                     }    
                 } 
