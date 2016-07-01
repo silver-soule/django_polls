@@ -19,23 +19,24 @@ class DetailForm(forms.Form):
         return tuple(choice_list_of_tuples)    
 
 class Signup(forms.Form):
-    fullName=forms.CharField(label="Your name",max_length=20)
-    number=forms.CharField(label="Password",max_length=14)
+    fullName=forms.CharField(label="Username",max_length=20)
+    password=forms.CharField(label="Password",max_length=14)
     dateOfBirth=forms.DateField(label="Date of Birth")
 
     def person_save(self):
         user=User.objects.create_user(username=self.cleaned_data['fullName'],
-                                      password=self.cleaned_data['number'],
+                                      password=self.cleaned_data['password'],
                                       date_joined=self.cleaned_data['dateOfBirth'])
         user.save()
         return user
 
 class Login(forms.Form):
     user_name=forms.CharField(label="Your name",max_length=20)
-    password=forms.CharField(label="PPassword",max_length=14)
+    password=forms.CharField(label="Password",max_length=14)
 
     def person_validate(self):
-        user=auth.authenticate(username=self.cleaned_data['user_name'],password=self.cleaned_data['password'])
+        user=auth.authenticate(username=self.cleaned_data['user_name'],
+                               password=self.cleaned_data['password'])
         if user is not None and user.is_active:
             return user
         return False     
