@@ -1,5 +1,7 @@
 <h1>{{ question.question_text }}</h1>
-
+<form action="{% url 'polls:loggedout' %}">
+    <input class=" waves-effect waves-light btn" style="float: right;" type="submit" value="Logout">
+</form>
 <ul>
 {% for choice in question.choice_set.all %}
     <li>{{ choice.choice_text }} -- {{ choice.votes }} vote{{ choice.votes|pluralize }}</li>

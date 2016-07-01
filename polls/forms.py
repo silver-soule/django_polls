@@ -2,6 +2,8 @@ from django import forms
 from .models import Question,Users
 import collections
 import datetime
+from django.contrib import auth
+from django.contrib.auth.models import User
 class DetailForm(forms.Form):
     def __init__(self,q_id,*args,**kwargs):
         super(DetailForm,self).__init__(*args,**kwargs)
@@ -18,17 +20,25 @@ class DetailForm(forms.Form):
 
 class Signup(forms.Form):
     fullName=forms.CharField(label="Your name",max_length=20)
-    number=forms.CharField(label="Phone Number",max_length=14)
+    number=forms.CharField(label="Password",max_length=14)
     dateOfBirth=forms.DateField(label="Date of Birth")
 
     def person_save(self):
-        person=Users(username=self.cleaned_data['fullName'],
-                    phone_number=self.cleaned_data['number'],
-                    date_of_birth=self.cleaned_data['dateOfBirth'])
-        person.save()
-        return person
+        user=User.objects.create_user(username=self.cleaned_data['fullName'],
+                                      password=self.cleaned_data['number'],
+                                      date_joined=self.cleaned_data['dateOfBirth'])
+        user.save()
+        return user
 
+class Login(forms.Form):
+    user_name=forms.CharField(label="Your name",max_length=20)
+    password=forms.CharField(label="PPassword",max_length=14)
 
+    def person_validate(self):
+        user=auth.authenticate(username=self.cleaned_data['user_name'],password=self.cleaned_data['password'])
+        if user is not None and user.is_active:
+            return user
+        return False     
 
 
 
