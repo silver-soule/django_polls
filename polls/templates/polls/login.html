@@ -2,8 +2,8 @@
 <html>
     <body>
         <link rel="stylesheet" type=text/css href="{% static 'polls/css/materialize.css' %}" />
+        <div id="wrong_user"></div>
         <div class="row">
-        {{error_message}}
             <form class="col s12" id="myform" >
                 {% csrf_token %}
                 <div class="row">

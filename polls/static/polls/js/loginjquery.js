@@ -20,6 +20,12 @@ button.click(function(event){
 
                             
                         }
+                    }
+
+                    else if (data['invalid data']) {
+                            $("#wrong_user").html(data['invalid data']);
+                            $("#username").addClass('invalid');
+                            $("#password").addClass('invalid');    
                     }    
                 } 
 });

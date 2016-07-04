@@ -88,6 +88,8 @@ def loggedin(request):
                 auth.login(request, user)
                 url=reverse('polls:index')
                 return JsonResponse({'success':url})
+            else:
+                return JsonResponse({'invalid data':'Invalid username or password'})
         jsonerror=form.errors
         return JsonResponse({'failiure':jsonerror})
 
