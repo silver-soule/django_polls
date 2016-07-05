@@ -98,6 +98,13 @@ def loggedout(request):
     auth.logout(request)
     return HttpResponseRedirect(reverse('polls:signup'))
 
+def imageview(request):
+    data={'1':'http://media.caranddriver.com/images/media/51/25-cars-worth-waiting-for-lp-ford-gt-photo-658253-s-original.jpg',
+          '2':'http://media.caranddriver.com/images/media/51/25-cars-worth-waiting-for-lp-mclaren-p14-photo-658259-s-original.jpg'}
+    return JsonResponse(data)
+
+def loadui(request):
+    return render(request,'polls/imageview.html')
 
 
 

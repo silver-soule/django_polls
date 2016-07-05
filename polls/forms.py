@@ -10,7 +10,6 @@ class DetailForm(forms.Form):
         self.question=Question.objects.get(pk=q_id)
         self.fields['choice_field'] = forms.ChoiceField(label='',widget=forms.RadioSelect, choices=self.func())
 
-
     def func(self):
         choice_list_of_tuples=[]
         choices=self.question.choice_set.all()

@@ -19,6 +19,9 @@ urlpatterns = [
     url(r'^signedin/$',views.signedin,name='signedin'),
     url(r'^login/$',views.login,name='login'),
     url(r'^loggedin/$',views.loggedin,name='loggedin'),
-    url(r'^loggedout/$',views.loggedout,name='loggedout')
+    url(r'^loggedout/$',views.loggedout,name='loggedout'),
+    url(r'^imageview/$',views.imageview,name='imageview'),
+    url(r'^loadui/$',views.loadui,name='loadui'),
+
 
 ]

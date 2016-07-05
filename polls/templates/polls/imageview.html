@@ -1,0 +1,52 @@
+{% load staticfiles %}
+<html>
+    <body>
+        <p>load!</p>
+        <div id='images'></div>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/react/15.2.0/react.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/react/15.2.0/react-dom.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-core/5.8.34/browser.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
+        <script type="text/babel">
+
+            var Imageview = React.createClass({
+                  getInitialState: function() {
+                    return {data: []};
+                  },
+                componentDidMount: function() {
+                    $.ajax({
+                        url:'/polls/imageview',
+                        success: function(data) {
+                            this.setState({data:data[randumnum()]});
+                            console.log(data);
+                        }.bind(this),
+                    });
+                },
+                render: function() {
+                    return (
+                        <div className="imgview"> 
+                            <Myimage data= {this.state.data} />
+                        </div>
+                    );
+                },
+                });
+            function randumnum() {
+                return 1+Math.floor(2*Math.random());
+            }
+
+            var Myimage = React.createClass({
+                render: function() {
+                    return (
+                        <div className="myimage"><img src={this.props.data}/> </div>
+                    );
+                },
+
+            });
+            ReactDOM.render(
+                <Imageview />,
+                document.getElementById('images')
+            ); 
+
+        </script>
+    </body>
+</html>
