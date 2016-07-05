@@ -27,4 +27,7 @@ class Users(models.Model):
     date_of_birth=models.DateTimeField('DOB')
     phone_number=models.CharField(max_length=14)
 
+class Comments(models.Model):
+    author=models.CharField(max_length=20)
+    comment_text=models.CharField(max_length=100)
         

@@ -20,5 +20,6 @@ urlpatterns = [
     url(r'^login/$',views.login,name='login'),
     url(r'^loggedin/$',views.loggedin,name='loggedin'),
     url(r'^loggedout/$',views.loggedout,name='loggedout')
+    url(r'^comments/$',views.comments,name='comments')
 
 ]

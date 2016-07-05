@@ -41,5 +41,21 @@ class Login(forms.Form):
             return user
         return False     
 
+class CommentForm(forms.Form):
+    author=forms.CharField(label="Author name", max_length=20)
+    comment_text=forms.CharField(label="Comment",max_length=100)
+
+    """def store_comment(self):
+        comment=Comment(author=self.cleaned_data['author'],
+                        comment_text=self.cleaned_data['comment_text'])
+        comment.save()"""
+
+
+
+
+        
+
+
+
 
 
