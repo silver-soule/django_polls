@@ -1,11 +1,12 @@
 from django.http import HttpResponseRedirect, HttpResponse,JsonResponse,HttpRequest
 from django.shortcuts import get_object_or_404, render
 from django.core.urlresolvers import reverse
-from .models import Question,Choice,Users
+from .models import Question,Choice,Users,Comments
 from django.utils import timezone
-from .forms import DetailForm,Signup,Login
+from .forms import DetailForm,Signup,Login,CommentForm
 from django.contrib import auth
 from django.contrib.auth.decorators import login_required
+from django.views.decorators.csrf import csrf_exempt
 
 @login_required
 def index(request):
@@ -105,6 +106,27 @@ def imageview(request):
 
 def loadui(request):
     return render(request,'polls/imageview.html')
+
+@csrf_exempt
+def getcomments(request):
+    comment_list=[]
+    for comment in Comments.objects.all():
+        comment_list.append({'id':comment.id,'author':comment.author,'text':comment.comment_text})
+        print(comment.id)
+    return JsonResponse({'stuff':comment_list})
+
+@csrf_exempt
+def comments(request):
+    if request.method=='POST':
+        form=CommentForm(request.POST)
+        if form.is_valid():
+            comment=form.store_comment()
+            print("successful save")
+            return JsonResponse({'success!':comment})
+    else:
+        return render(request,'polls/comments.html')
+
+
 
 
 

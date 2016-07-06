@@ -1,0 +1,120 @@
+<!-- index.html -->
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>React Tutorial</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/react/15.2.0/react.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/react/15.2.0/react-dom.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-core/5.8.34/browser.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/remarkable/1.6.2/remarkable.min.js"></script>
+  </head>
+  <body>
+    <div id="content"></div>
+    <script type="text/babel">
+        var CommentPage=React.createClass({
+          getInitialState: function() {
+            return {author: '', text: '',data:[]};
+          },
+          handleAuthorChange: function(e) {
+            this.setState({author: e.target.value});
+          },
+          handleTextChange: function(e) {
+            this.setState({text: e.target.value});
+          },
+
+          componentDidMount: function() {
+            $.ajax({
+              url: '/polls/getcomments/',
+              dataType: 'json',
+              cache: false,
+              success: function(data) {
+                this.setState({data: data['stuff']});
+              }.bind(this),
+              error: function(xhr, status, err) {
+                console.error(this.props.url, status, err.toString());
+              }.bind(this)
+            });
+          },
+
+          handleSubmit: function(e) {
+            e.preventDefault();
+            this.state.data.push({author:this.state.author,text:this.state.text,id:Date.now()});
+            $.ajax({
+              url:'/polls/comments/',
+              type:'POST',
+              data:{'author':this.state.author,'comment_text':this.state.text},
+              success: function(data) {
+                console.log(data);
+                this.
+              },
+            });
+            var author = this.state.author.trim();
+            var text = this.state.text.trim();
+            this.setState({author: '',text:''});
+          },
+          render:function() {
+            return (
+              <div className="commentpage">
+              <form onSubmit={this.handleSubmit}>
+                <input
+                  name='author'
+                  type="text"
+                  placeholder="name"
+                  value={this.state.author}
+                  onChange={this.handleAuthorChange}
+                />
+                <input
+                  name='comment_text'
+                  type="text"
+                  placeholder="comment"
+                  value={this.state.text}
+                  onChange={this.handleTextChange}
+                />
+                <input type="submit" value="Post"  /> 
+              </form>
+              <CommentList data={this.state.data}/>
+              </div>
+            );   
+          },
+        });
+
+        var CommentList = React.createClass({
+          render: function() {
+            var commentnode= this.props.data.map(function(comment) {
+              return (
+                  <div className='commentl' key={comment.id}>
+                  <Comment author={comment.author}  >
+                  { comment.text}
+                  </Comment>
+                  </div>
+                );
+            });
+            return (
+              <div className="commentlist">
+              {commentnode}
+              </div>
+            );
+            
+          },
+        });
+
+        var Comment= React.createClass({
+          render: function() {
+            return (
+              <div className='comment'>
+                <h2>{this.props.author}</h2>
+                <p>{this.props.children}</p>
+                </div>
+
+            );
+          },
+        });
+        ReactDOM.render(
+          <CommentPage />,
+          document.getElementById('content')
+        );
+    </script>
+  </body>
+</html>

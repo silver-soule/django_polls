@@ -1,5 +1,5 @@
 from django import forms
-from .models import Question,Users
+from .models import Question,Users,Comments
 import collections
 import datetime
 from django.contrib import auth
@@ -8,7 +8,7 @@ class DetailForm(forms.Form):
     def __init__(self,q_id,*args,**kwargs):
         super(DetailForm,self).__init__(*args,**kwargs)
         self.question=Question.objects.get(pk=q_id)
-        self.fields['choice_field'] = forms.ChoiceField(label='',widget=forms.RadioSelect, choices=self.func())
+        self.fields['choice_field'] = forms.ChoiceField(label='' , widget=forms.RadioSelect , choices=self.func())
 
     def func(self):
         choice_list_of_tuples=[]
@@ -18,8 +18,8 @@ class DetailForm(forms.Form):
         return tuple(choice_list_of_tuples)    
 
 class Signup(forms.Form):
-    fullName=forms.CharField(label="Username",max_length=20)
-    password=forms.CharField(label="Password",max_length=14)
+    fullName=forms.CharField(label="Username" , max_length=20)
+    password=forms.CharField(label="Password" , max_length=14)
     dateOfBirth=forms.DateField(label="Date of Birth")
 
     def person_save(self):
@@ -42,3 +42,15 @@ class Login(forms.Form):
 
 
 
+class CommentForm(forms.Form):
+    author=forms.CharField(label="Author_name", max_length=20)
+    comment_text=forms.CharField(label="Comment",max_length=100)
+
+    def store_comment(self):
+        comment=Comments(author=self.cleaned_data['author'],
+                        comment_text=self.cleaned_data['comment_text'])
+        print("saved")
+        comment.save()
+        return comment
+
+    
