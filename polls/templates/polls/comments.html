@@ -27,7 +27,6 @@
           componentDidMount: function() {
             $.ajax({
               url: '/polls/getcomments/',
-              dataType: 'json',
               cache: false,
               success: function(data) {
                 this.setState({data: data['stuff']});
@@ -47,9 +46,8 @@
               data:{'author':this.state.author,'comment_text':this.state.text},
               success: function(data) {
                 console.log(data);
-                this.
               },
-            });
+            })
             var author = this.state.author.trim();
             var text = this.state.text.trim();
             this.setState({author: '',text:''});

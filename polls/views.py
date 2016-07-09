@@ -1,12 +1,13 @@
 from django.http import HttpResponseRedirect, HttpResponse,JsonResponse,HttpRequest
 from django.shortcuts import get_object_or_404, render
 from django.core.urlresolvers import reverse
-from .models import Question,Choice,Users,Comments
+from .models import Question,Choice,Comments
 from django.utils import timezone
-from .forms import DetailForm,Signup,Login,CommentForm
+from .forms import DetailForm,SignupForm,LoginForm,CommentForm,PasswordResetForm
 from django.contrib import auth
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_exempt
+from mysite.tasks import sendmail
 
 @login_required
 def index(request):
@@ -62,13 +63,13 @@ def vote(request, question_id):
         return HttpResponseRedirect(reverse('polls:results', args=(question.id,)))
 
 def signup(request):
-    form=Signup()
+    form=SignupForm()
     return render(request,'polls/signup.html',{'form':form})
 
 
 def signedin(request):
     if request.method=='POST':
-        form=Signup(request.POST)
+        form=SignupForm(request.POST)
         if form.is_valid():
             person=form.person_save()
             url=reverse('polls:login')
@@ -77,12 +78,13 @@ def signedin(request):
         return JsonResponse({'failiure':jsonerror})
 
 def login(request):
-    form=Login()
+    form=LoginForm()
+
     return render(request,'polls/login.html',{'form':form})
 
 def loggedin(request):
     if request.method=='POST':
-        form=Login(request.POST)
+        form=LoginForm(request.POST)
         if form.is_valid():
             user=form.person_validate()
             if user is not False:
@@ -105,13 +107,16 @@ def imageview(request):
     return JsonResponse(data)
 
 def loadui(request):
+    result=add.delay(4,4)
     return render(request,'polls/imageview.html')
 
 @csrf_exempt
 def getcomments(request):
     comment_list=[]
     for comment in Comments.objects.all():
-        comment_list.append({'id':comment.id,'author':comment.author,'text':comment.comment_text})
+        comment_list.append({'id':comment.id,
+                            'author':comment.author,
+                            'text':comment.comment_text})
         print(comment.id)
     return JsonResponse({'stuff':comment_list})
 
@@ -122,9 +127,21 @@ def comments(request):
         if form.is_valid():
             comment=form.store_comment()
             print("successful save")
-            return JsonResponse({'success!':comment})
+            return JsonResponse({'success!':'yay'})
     else:
         return render(request,'polls/comments.html')
+
+@csrf_exempt
+def password_reset(request):
+    if request.method=='POST':
+        print("a")
+        form=PasswordResetForm(request.POST)
+        if form.is_valid():
+            print("b")
+            sendmail.delay(form.cleaned_data['email_id'])
+            return render(request,'polls/login.html')
+    else:
+        return render(request,'polls/password-reset.html')
 
 
 

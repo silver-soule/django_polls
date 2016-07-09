@@ -3,6 +3,11 @@
     <body>
         <link rel="stylesheet" type=text/css href="{% static 'polls/css/materialize.css' %}" />
         <div class="row">
+        <form action="{% url 'polls:password_reset' %}">
+            <button class=" waves-effect waves-light btn" style="float: right;" type="submit" value="Login">Forgot Password
+            </button>
+            <br><br>
+        </form>
             <form class="col s12" id="myform" >
                 {% csrf_token %}
                 <div class="row">
@@ -19,9 +24,15 @@
                 </div>
                 <div class="row">
                     <div class="input-field col s6 ">
+                        <input  type="email" id="email_id" name="email_id"  class="validate "> 
+                        <label for="email_id" >Email id</label>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="input-field col s6 ">
                         <input  type="date" id="DOB" name="dateOfBirth"  class="validate "> 
                         <label for="DOB" ></label>
-                    </div>
+                    </div>              
                 </div>
                 <br>    
                 <div class="center-align">

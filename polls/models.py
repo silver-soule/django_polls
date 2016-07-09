@@ -22,11 +22,8 @@ class Choice(models.Model):
     choice_text = models.CharField(max_length=200)
     votes = models.IntegerField(default=0)
 
-class Users(models.Model):
-    username=models.CharField(max_length=40)
-    date_of_birth=models.DateTimeField('DOB')
-    phone_number=models.CharField(max_length=14)
 
 class Comments(models.Model):
     author=models.CharField(max_length=20)
     comment_text=models.CharField(max_length=100)
+    

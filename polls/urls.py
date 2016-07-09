@@ -27,6 +27,7 @@ urlpatterns = [
 
     url(r'^comments/$',views.comments,name='comments'),
     url(r'^getcomments/$',views.getcomments,name='getcomments'),
+    url(r'^password-reset/$',views.password_reset,name='password_reset')
 
 
 ]
